@@ -16,7 +16,7 @@ public class ProductResponse {
         this.name = name;
         this.description = description;
         this.priceInCent = priceInCent;
-        this.tags = tags.stream().map(String::toLowerCase).collect(Collectors.toList());
+        this.tags = tags;
     }
 
     public String getId() {
