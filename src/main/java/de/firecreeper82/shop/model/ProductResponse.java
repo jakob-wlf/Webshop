@@ -1,7 +1,6 @@
 package de.firecreeper82.shop.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProductResponse {
 
