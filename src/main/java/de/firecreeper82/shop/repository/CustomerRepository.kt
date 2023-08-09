@@ -1,7 +1,6 @@
 package de.firecreeper82.shop.repository
 
 import de.firecreeper82.shop.model.CustomerResponse
-import java.util.UUID
 
 class CustomerRepository {
 
