@@ -12,6 +12,11 @@ class CustomerController {
 
     private val customerRepository: CustomerRepository = CustomerRepository();
 
+    @GetMapping("/customers")
+    fun getAllCustomers(): List<CustomerResponse> {
+        return customerRepository.customers;
+    }
+
     @GetMapping("/customers/{id}")
     fun getCustomerById(@PathVariable id: String): ResponseEntity<CustomerResponse> {
 
@@ -21,5 +26,4 @@ class CustomerController {
         else
             ResponseEntity.notFound().build()
     }
-
 }

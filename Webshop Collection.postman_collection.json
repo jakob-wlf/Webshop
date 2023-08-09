@@ -26,13 +26,96 @@
 			"response": []
 		},
 		{
+			"name": "GET Product by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/products/a9249672-a658-44bc-97fe-b336f8c1ff32",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"a9249672-a658-44bc-97fe-b336f8c1ff32"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Customer by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/customers/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST Products",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"AMD Ryzen 7 3800X\",\r\n    \"description\": \"More stuff\",\r\n    \"priceInCent\": 46300,\r\n    \"tags\": [\r\n        \"amd\",\r\n        \"processor\"\r\n    ]\r\n}"
+					"raw": "{\r\n    \"name\": \"AMD Ryzen 7 3800X\",\r\n    \"description\": \"More stuff\",\r\n    \"priceInCent\": 46300,\r\n    \"tags\": [\r\n        \"amd\",\r\n        \"processor\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "localhost:8080/api/products",
@@ -49,20 +132,58 @@
 			"response": []
 		},
 		{
-			"name": "GET Product by Id",
+			"name": "POST Orders",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:8080/api/products/1",
+					"raw": "localhost:8080/api/orders",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"api",
-						"products",
-						"1"
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST OrderPositions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"1\",\r\n    \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/orders/abcdef/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders",
+						"abcdef",
+						"positions"
 					]
 				}
 			},
@@ -74,7 +195,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/products/1",
+					"raw": "localhost:8080/api/products/0a1759ab-14e5-4930-af72-9e2166c67d38\"",
 					"host": [
 						"localhost"
 					],
@@ -82,7 +203,7 @@
 					"path": [
 						"api",
 						"products",
-						"1"
+						"0a1759ab-14e5-4930-af72-9e2166c67d38\""
 					]
 				}
 			},

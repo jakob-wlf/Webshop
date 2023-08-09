@@ -36,7 +36,7 @@ public class ProductRepository {
     }
 
     public Optional<ProductResponse> findById(String id) {
-        return products.stream().filter(p -> Objects.equals(p.getId(), id)).findFirst();
+        return products.stream().filter(p -> p.getId().equals(id)).findFirst();
     }
 
     public void deleteById(String id) {
