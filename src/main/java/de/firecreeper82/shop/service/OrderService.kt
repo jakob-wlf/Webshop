@@ -5,14 +5,14 @@ import de.firecreeper82.shop.repository.CustomerRepository
 import de.firecreeper82.shop.repository.OrderPositionRepository
 import de.firecreeper82.shop.repository.OrderRepository
 import de.firecreeper82.shop.repository.ProductRepository
+import org.springframework.stereotype.Service
 import java.util.UUID
 
-class OrderService {
-
-    var orderRepository = OrderRepository()
-    val customerRepository = CustomerRepository()
-    val orderPositionRepository = OrderPositionRepository()
-    val productRepository = ProductRepository()
+@Service
+class OrderService(val productRepository: ProductRepository,
+                   val orderRepository: OrderRepository,
+                   val customerRepository: CustomerRepository,
+                   val orderPositionRepository: OrderPositionRepository) {
 
     fun createOrder(request: OrderCreateRequest): OrderResponse {
 

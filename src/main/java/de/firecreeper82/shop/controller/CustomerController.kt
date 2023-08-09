@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class CustomerController {
-
-    private val customerRepository: CustomerRepository = CustomerRepository();
+class CustomerController(val customerRepository: CustomerRepository) {
 
     @GetMapping("/customers")
     fun getAllCustomers(): List<CustomerResponse> {

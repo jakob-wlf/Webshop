@@ -1,7 +1,9 @@
 package de.firecreeper82.shop.repository
 
 import de.firecreeper82.shop.model.CustomerResponse
+import org.springframework.stereotype.Service
 
+@Service
 class CustomerRepository {
 
     val customers = listOf(

@@ -3,11 +3,11 @@ package de.firecreeper82.shop.repository
 import de.firecreeper82.shop.model.OrderCreateRequest
 import de.firecreeper82.shop.model.OrderResponse
 import de.firecreeper82.shop.model.OrderStatus
-import de.firecreeper82.shop.model.ProductResponse
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
-import java.util.function.Predicate
 
+@Service
 class OrderRepository {
 
     val orders = mutableListOf<OrderResponse>();

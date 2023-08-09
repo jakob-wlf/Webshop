@@ -2,11 +2,15 @@ package de.firecreeper82.shop.repository;
 
 import de.firecreeper82.shop.model.ProductCreateRequest;
 import de.firecreeper82.shop.model.ProductResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ProductRepository {
+
+    public static ProductRepository repository;
 
     List<ProductResponse> products;
 
@@ -29,19 +33,19 @@ public class ProductRepository {
         }
     }
     private List<String> lowercaseTags(ProductResponse p) {
-        return p.getTags()
+        return p.tags()
                 .stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 
     public Optional<ProductResponse> findById(String id) {
-        return products.stream().filter(p -> p.getId().equals(id)).findFirst();
+        return products.stream().filter(p -> p.id().equals(id)).findFirst();
     }
 
     public void deleteById(String id) {
         this.products = products.stream()
-                                .filter(p -> !Objects.equals(p.getId(), id))
+                                .filter(p -> !Objects.equals(p.id(), id))
                                 .collect(Collectors.toList());
     }
 
