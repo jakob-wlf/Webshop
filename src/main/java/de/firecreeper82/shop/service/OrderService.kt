@@ -1,5 +1,6 @@
 package de.firecreeper82.shop.service
 
+import de.firecreeper82.shop.exceptions.IdNotFoundException
 import de.firecreeper82.shop.exceptions.WebShopException
 import de.firecreeper82.shop.model.*
 import de.firecreeper82.shop.repository.CustomerRepository
@@ -19,7 +20,6 @@ class OrderService(val productRepository: ProductRepository,
     fun createOrder(request: OrderCreateRequest): OrderResponse {
 
         val customer: CustomerResponse = customerRepository.findById(request.customerId)
-            ?: throw WebShopException(message = "Customer with id ${request.customerId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
         return orderRepository.save(request)
     }
@@ -27,10 +27,9 @@ class OrderService(val productRepository: ProductRepository,
     fun createNewPositionForOrder(orderId: String, request: OrderPositionCreateRequest): OrderPositionResponse {
 
         orderRepository.findById(orderId)
-            ?: throw WebShopException(message = "Order with id $orderId not found", statusCode = HttpStatus.BAD_REQUEST)
 
         if (productRepository.findById(request.productId).isEmpty)
-            throw WebShopException(message = "Product with id ${request.productId} not found", statusCode = HttpStatus.BAD_REQUEST)
+            throw IdNotFoundException(message = "Product with id ${request.productId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
         val orderPositionResponse = OrderPositionResponse(
                 id = UUID.randomUUID().toString(),
