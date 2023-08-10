@@ -19,7 +19,7 @@ class OrderService(val productRepository: ProductRepository,
 
     fun createOrder(request: OrderCreateRequest): OrderResponse {
 
-        val customer: CustomerResponse = customerRepository.findById(request.customerId)
+        customerRepository.findById(request.customerId)
 
         return orderRepository.save(request)
     }
@@ -33,9 +33,9 @@ class OrderService(val productRepository: ProductRepository,
 
         val orderPositionResponse = OrderPositionResponse(
                 id = UUID.randomUUID().toString(),
+                orderId = orderId,
                 productId = request.productId,
                 quantity = request.quantity
-
         )
         orderPositionRepository.save(orderPositionResponse)
 
