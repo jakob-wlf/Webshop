@@ -1,10 +1,12 @@
 package de.firecreeper82.shop.service
 
+import de.firecreeper82.shop.exceptions.WebShopException
 import de.firecreeper82.shop.model.*
 import de.firecreeper82.shop.repository.CustomerRepository
 import de.firecreeper82.shop.repository.OrderPositionRepository
 import de.firecreeper82.shop.repository.OrderRepository
 import de.firecreeper82.shop.repository.ProductRepository
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -16,17 +18,19 @@ class OrderService(val productRepository: ProductRepository,
 
     fun createOrder(request: OrderCreateRequest): OrderResponse {
 
-        val customer: CustomerResponse = customerRepository.findById(request.customerId) ?: throw Exception("Customer not found")
+        val customer: CustomerResponse = customerRepository.findById(request.customerId)
+            ?: throw WebShopException(message = "Customer with id ${request.customerId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
         return orderRepository.save(request)
     }
 
     fun createNewPositionForOrder(orderId: String, request: OrderPositionCreateRequest): OrderPositionResponse {
 
-        orderRepository.findById(orderId) ?: throw Exception("Order not found")
+        orderRepository.findById(orderId)
+            ?: throw WebShopException(message = "Order with id $orderId not found", statusCode = HttpStatus.BAD_REQUEST)
 
         if (productRepository.findById(request.productId).isEmpty)
-            throw Exception("Product not found")
+            throw WebShopException(message = "Product with id ${request.productId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
         val orderPositionResponse = OrderPositionResponse(
                 id = UUID.randomUUID().toString(),
