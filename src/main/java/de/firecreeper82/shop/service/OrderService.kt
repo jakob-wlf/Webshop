@@ -43,4 +43,10 @@ class OrderService(val productRepository: ProductRepository,
 
     }
 
+    fun updateOrder(id: String, request: OrderUpdateRequest): OrderResponse {
+        val order = orderRepository.findById(id)
+        val updatedOrder = order.copy(orderStatus = request.orderStatus)
+        return orderRepository.save(updatedOrder)
+    }
+
 }

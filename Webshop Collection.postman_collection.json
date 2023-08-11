@@ -70,7 +70,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/customers/1",
+					"raw": "localhost:8080/api/customers/2",
 					"host": [
 						"localhost"
 					],
@@ -78,7 +78,28 @@
 					"path": [
 						"api",
 						"customers",
-						"1"
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Customer Shopping Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/customers/1/shoppingcart",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"1",
+						"shoppingcart"
 					]
 				}
 			},
@@ -98,6 +119,26 @@
 					"path": [
 						"api",
 						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET OrderPositions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/orders/positions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders",
+						"positions"
 					]
 				}
 			},
@@ -138,7 +179,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"customerId\": \"2\"\r\n}",
+					"raw": "{\r\n    \"customerId\": \"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -160,13 +201,13 @@
 			"response": []
 		},
 		{
-			"name": "POST OrderPositions",
+			"name": "POST OrderPosition",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": \"1\",\r\n    \"quantity\": 5\r\n}",
+					"raw": "{\r\n    \"productId\": \"631c8a96-fb29-4af9-b1ad-689bc3103d2a\",\r\n    \"quantity\": 5\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -174,7 +215,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/orders/abcdef/positions",
+					"raw": "localhost:8080/api/orders/89670297-5b84-4298-9fa3-a0d4912b4eac/positions",
 					"host": [
 						"localhost"
 					],
@@ -182,8 +223,66 @@
 					"path": [
 						"api",
 						"orders",
-						"abcdef",
+						"89670297-5b84-4298-9fa3-a0d4912b4eac",
 						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"AMD Ryzen 7 3800X\",\r\n    \"description\": \"More stuff\",\r\n    \"priceInCent\": 46300\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/products/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Order",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderStatus\": \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/orders/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders",
+						"1"
 					]
 				}
 			},

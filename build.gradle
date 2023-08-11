@@ -5,6 +5,7 @@ plugins {
 	id 'org.jetbrains.kotlin.jvm' version '1.7.20'
 	id 'org.jetbrains.kotlin.plugin.allopen' version '1.7.20'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.7.20'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.7.20'
 }
 
 group = 'de.firecreeper82'
@@ -20,6 +21,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+
 
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2'
 

@@ -26,6 +26,11 @@ class OrderRepository {
         return orderResponse;
     }
 
+    fun save(response: OrderResponse): OrderResponse {
+        orders.add(response)
+        return response
+    }
+
     fun findById(orderId: String): OrderResponse {
         return orders.find { it.id == orderId }
             ?: throw IdNotFoundException(message = "Order with id $orderId not found", statusCode = HttpStatus.BAD_REQUEST)
