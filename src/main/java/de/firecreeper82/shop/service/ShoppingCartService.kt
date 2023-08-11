@@ -10,6 +10,7 @@ import de.firecreeper82.shop.repository.OrderPositionRepository
 import de.firecreeper82.shop.repository.OrderRepository
 import de.firecreeper82.shop.repository.ProductRepository
 import org.springframework.stereotype.Service
+import java.lang.IllegalArgumentException
 
 @Service
 class ShoppingCartService(val orderRepository: OrderRepository,
@@ -40,11 +41,15 @@ class ShoppingCartService(val orderRepository: OrderRepository,
         )
     }
 
-    private fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
+    fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
         val positionAmounts: List<Long> = orderPositions.map {
             val product: ProductResponse = productRepository
                 .findById(it.productId)
                 .orElseThrow { IdNotFoundException("Order with id ${it.productId} not found") }
+
+            if(it.quantity <= 0)
+                throw IllegalArgumentException("OrderPosition with quantity of ${it.quantity} is not allowed")
+
             it.quantity * product.priceInCent
         }
         val positionSum = positionAmounts.sum()
