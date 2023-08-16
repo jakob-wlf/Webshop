@@ -1,5 +1,6 @@
 package de.firecreeper82.shop.service
 
+import de.firecreeper82.shop.entity.OrderEntity
 import de.firecreeper82.shop.exceptions.IdNotFoundException
 import de.firecreeper82.shop.model.OrderPositionResponse
 import de.firecreeper82.shop.model.ShoppingCartResponse

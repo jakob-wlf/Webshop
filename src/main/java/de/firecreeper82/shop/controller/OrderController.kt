@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class OrderController(val orderService: OrderService) {
 
     @PostMapping("/orders")
-    fun createOrder(@RequestBody request: OrderCreateRequest): OrderResponse {
+    fun createOrder(@RequestBody request: OrderCreateRequest): CreateOrderResponse {
         return orderService.createOrder(request)
     }
 
@@ -23,7 +23,12 @@ class OrderController(val orderService: OrderService) {
     }
 
     @PutMapping("orders/{id}")
-    fun updateOrder(@PathVariable id: String, @RequestBody request: OrderUpdateRequest): OrderResponse {
+    fun updateOrder(@PathVariable id: String, @RequestBody request: OrderUpdateRequest): CreateOrderResponse {
         return orderService.updateOrder(id, request)
+    }
+
+    @GetMapping("/orders/{id}")
+    fun getOrder(@PathVariable id: String): GetOrderResponse {
+        return orderService.getOrder(id)
     }
 }

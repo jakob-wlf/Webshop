@@ -3,6 +3,7 @@ package de.firecreeper82.shop.exceptions
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
@@ -18,6 +19,7 @@ class ApiExceptionHandler {
             is WebShopException -> exception.statusCode to exception.message
             is IdNotFoundException -> exception.statusCode to exception.message
             is IllegalArgumentException -> HttpStatus.BAD_REQUEST to (exception.message ?: "Illegal Argument")
+            is JpaObjectRetrievalFailureException -> HttpStatus.BAD_REQUEST to ("Object not found")
             else -> HttpStatus.INTERNAL_SERVER_ERROR to (exception.message ?: "An error occurred")
         }
 
