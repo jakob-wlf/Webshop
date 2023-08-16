@@ -1,68 +1,18 @@
-package de.firecreeper82.shop.repository;
+package de.firecreeper82.shop.repository
 
-import de.firecreeper82.shop.model.ProductCreateRequest;
-import de.firecreeper82.shop.model.ProductResponse;
-import org.springframework.stereotype.Service;
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.springframework.data.jpa.repository.JpaRepository
+interface ProductRepository : JpaRepository<ProductEntity, String>
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-@Service
-public class ProductRepository {
-
-    public static ProductRepository repository;
-
-    List<ProductResponse> products;
-
-    public ProductRepository() {
-        products = new ArrayList<>();
-        products.add(new ProductResponse(UUID.randomUUID().toString(), "AMD Ryzen 9 5950X", "Just some stuff", 79900, List.of("amd", "processor")));
-        products.add(new ProductResponse(UUID.randomUUID().toString(), "Intel Core 19-9900KF", "Very cool stuff", 74353, List.of("intel", "processor")));
-        products.add(new ProductResponse(UUID.randomUUID().toString(), "NVIDIA Geforce GTA 1080 Ti Black Edition 11Gb", "Super cool", 74544, List.of("nvidia", "graphics")));
-    }
-
-    public List<ProductResponse> findAll(String tag) {
-        if(tag == null)  {
-            return products;
-        }
-        else {
-            return products
-                    .stream()
-                    .filter(p -> lowercaseTags(p).contains(tag.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-    }
-    private List<String> lowercaseTags(ProductResponse p) {
-        return p.tags()
-                .stream()
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
-    }
-
-    public Optional<ProductResponse> findById(String id) {
-        return products.stream().filter(p -> p.id().equals(id)).findFirst();
-    }
-
-    public void deleteById(String id) {
-        this.products = products.stream()
-                                .filter(p -> !Objects.equals(p.id(), id))
-                                .collect(Collectors.toList());
-    }
-
-    public ProductResponse save(ProductResponse response) {
-        products.add(response);
-        return response;
-    }
-
-    public ProductResponse save(ProductCreateRequest request) {
-        ProductResponse response = new ProductResponse(
-                UUID.randomUUID().toString(),
-                request.getName(),
-                request.getDescription(),
-                request.getPriceInCent(),
-                request.getTags()
-        );
-        products.add(response);
-        return response;
-    }
-}
+@Entity
+@Table(name = "products")
+data class ProductEntity(
+    @Id val id: String,
+    val name: String,
+    val description: String,
+    val priceInCent: Int,
+    @ElementCollection val tags: List<String>
+)

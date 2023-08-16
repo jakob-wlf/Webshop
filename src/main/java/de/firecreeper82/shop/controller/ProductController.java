@@ -4,14 +4,16 @@ import de.firecreeper82.shop.exceptions.IdNotFoundException;
 import de.firecreeper82.shop.model.ProductCreateRequest;
 import de.firecreeper82.shop.model.ProductResponse;
 import de.firecreeper82.shop.model.ProductUpdateRequest;
+import de.firecreeper82.shop.repository.ProductEntity;
 import de.firecreeper82.shop.repository.ProductRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -25,16 +27,18 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<ProductResponse> getAllProducts(@RequestParam(required = false) String tag ) {
-        return productRepository.findAll(tag);
+        return productRepository.findAll()
+                .stream()
+                .filter(productEntity -> tag == null || productEntity.getTags().contains(tag))
+                .map(ProductController::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable String id) {
-        Optional<ProductResponse> product = productRepository.findById(id);
+    public ProductResponse getProductById(@PathVariable String id) {
+        ProductEntity product = productRepository.getReferenceById(id);
 
-        return product
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return mapToResponse(product);
     }
 
     @DeleteMapping("/products/{id}")
@@ -45,20 +49,41 @@ public class ProductController {
 
     @PostMapping("/products")
     public ProductResponse createProduct(@RequestBody ProductCreateRequest request) {
-        return productRepository.save(request);
+        ProductEntity product = new ProductEntity(
+                UUID.randomUUID().toString(),
+                request.getName(),
+                request.getDescription(),
+                request.getPriceInCent(),
+                request.getTags()
+        );
+
+        ProductEntity savedProduct = productRepository.save(product);
+        return mapToResponse(savedProduct);
     }
 
     @PutMapping("/products/{id}")
     public ProductResponse updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable String id) throws IdNotFoundException {
-        final ProductResponse product = productRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Product with id " + id + " not found", HttpStatus.BAD_REQUEST));
-        final ProductResponse updatedProduct = new ProductResponse(
-                product.id(),
-                (request.name() == null) ? product.name() : request.name(),
-                (request.description() == null) ? product.description() : request.description(),
-                (request.priceInCent() == null) ? product.priceInCent() : request.priceInCent(),
-                product.tags()
+        final ProductEntity product = productRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Product with id " + id + " not found", HttpStatus.BAD_REQUEST));
+        final ProductEntity updatedProduct = new ProductEntity(
+                product.getId(),
+                (request.name() == null) ? product.getName() : request.name(),
+                (request.description() == null) ? product.getDescription() : request.description(),
+                (request.priceInCent() == null) ? product.getPriceInCent() : request.priceInCent(),
+                product.getTags()
         );
 
-        return productRepository.save(updatedProduct);
+        ProductEntity savedProduct = productRepository.save(updatedProduct);
+        return mapToResponse(savedProduct);
+    }
+
+    @NotNull
+    private static ProductResponse mapToResponse(ProductEntity product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPriceInCent(),
+                product.getTags()
+        );
     }
 }

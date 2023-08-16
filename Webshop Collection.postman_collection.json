@@ -46,31 +46,12 @@
 			"response": []
 		},
 		{
-			"name": "GET Customers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/customers",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"customers"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "GET Customer by Id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/customers/2",
+					"raw": "localhost:8080/api/customers/1",
 					"host": [
 						"localhost"
 					],
@@ -78,7 +59,7 @@
 					"path": [
 						"api",
 						"customers",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -100,25 +81,6 @@
 						"customers",
 						"1",
 						"shoppingcart"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET Orders",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/orders",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"orders"
 					]
 				}
 			},
@@ -237,7 +199,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"AMD Ryzen 7 3800X\",\r\n    \"description\": \"More stuff\",\r\n    \"priceInCent\": 46300\r\n}",
+					"raw": "{\r\n    \"name\": \"Hi\",\r\n    \"description\": \"idc\",\r\n    \"priceInCent\": 4600300\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -245,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/products/1",
+					"raw": "localhost:8080/api/products/ff853482-b6fd-4ec4-b572-68386f681d21",
 					"host": [
 						"localhost"
 					],
@@ -253,7 +215,7 @@
 					"path": [
 						"api",
 						"products",
-						"1"
+						"ff853482-b6fd-4ec4-b572-68386f681d21"
 					]
 				}
 			},

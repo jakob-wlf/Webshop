@@ -17,10 +17,6 @@ class OrderController(val orderService: OrderService) {
         return orderService.createOrder(request)
     }
 
-    @GetMapping("/orders")
-    fun getAllOrders(): List<OrderResponse> {
-        return orderService.orderRepository.orders
-    }
     @PostMapping("/orders/{id}/positions")
     fun createOrderPositions(@PathVariable(name = "id") orderId: String, @RequestBody request: OrderPositionCreateRequest) {
         orderService.createNewPositionForOrder(orderId, request)
@@ -29,10 +25,5 @@ class OrderController(val orderService: OrderService) {
     @PutMapping("orders/{id}")
     fun updateOrder(@PathVariable id: String, @RequestBody request: OrderUpdateRequest): OrderResponse {
         return orderService.updateOrder(id, request)
-    }
-
-    @GetMapping("/orders/positions")
-    fun getAllOrderPositions(): List<OrderPositionResponse> {
-        return orderService.orderPositionRepository.orderPositions
     }
 }

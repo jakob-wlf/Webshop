@@ -2,13 +2,8 @@ package de.firecreeper82.shop.service
 
 import de.firecreeper82.shop.exceptions.IdNotFoundException
 import de.firecreeper82.shop.model.OrderPositionResponse
-import de.firecreeper82.shop.model.OrderResponse
-import de.firecreeper82.shop.model.ProductResponse
 import de.firecreeper82.shop.model.ShoppingCartResponse
-import de.firecreeper82.shop.repository.CustomerRepository
-import de.firecreeper82.shop.repository.OrderPositionRepository
-import de.firecreeper82.shop.repository.OrderRepository
-import de.firecreeper82.shop.repository.ProductRepository
+import de.firecreeper82.shop.repository.*
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 
@@ -22,11 +17,11 @@ class ShoppingCartService(val orderRepository: OrderRepository,
         customerRepository.findById(customerId);
 
 
-        val orders: List<OrderResponse> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
+        val orders: List<OrderEntity> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
 
         val orderIds = orders.map { it.id }
 
-        val orderPositions: List<OrderPositionResponse> = orderPositionRepository.findAllByOrderIds(orderIds)
+        val orderPositions = orderPositionRepository.findAllById(orderIds).map { OrderService.mapToResponse(it) }
 
         val deliveryCost = 800L
         val totalAmount = calculateSumForCart(orderPositions, deliveryCost)
@@ -43,7 +38,7 @@ class ShoppingCartService(val orderRepository: OrderRepository,
 
     fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
         val positionAmounts: List<Long> = orderPositions.map {
-            val product: ProductResponse = productRepository
+            val product: ProductEntity = productRepository
                 .findById(it.productId)
                 .orElseThrow { IdNotFoundException("Order with id ${it.productId} not found") }
 

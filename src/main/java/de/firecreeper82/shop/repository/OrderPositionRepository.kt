@@ -1,18 +1,17 @@
 package de.firecreeper82.shop.repository
 
-import de.firecreeper82.shop.model.OrderPositionResponse
-import org.springframework.stereotype.Service
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.springframework.data.jpa.repository.JpaRepository
 
-@Service
-class OrderPositionRepository {
+interface OrderPositionRepository : JpaRepository<OrderPositionEntity, String>
 
-    val orderPositions = mutableListOf<OrderPositionResponse>();
-
-    fun save(orderPositionResponse: OrderPositionResponse) {
-        orderPositions.add(orderPositionResponse)
-    }
-
-    fun findAllByOrderIds(orderIds: List<String>): List<OrderPositionResponse> {
-        return orderPositions.filter { orderIds.contains(it.orderId) }
-    }
-}
+@Entity
+@Table(name="order_positions")
+data class OrderPositionEntity(
+    @Id val id: String,
+    val orderId: String,
+    val productId: String,
+    val quantity: Long
+)

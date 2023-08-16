@@ -1,14 +1,11 @@
 package de.firecreeper82.shop.service
 
 import de.firecreeper82.shop.exceptions.IdNotFoundException
-import de.firecreeper82.shop.exceptions.WebShopException
 import de.firecreeper82.shop.model.*
-import de.firecreeper82.shop.repository.CustomerRepository
-import de.firecreeper82.shop.repository.OrderPositionRepository
-import de.firecreeper82.shop.repository.OrderRepository
-import de.firecreeper82.shop.repository.ProductRepository
+import de.firecreeper82.shop.repository.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -21,7 +18,16 @@ class OrderService(val productRepository: ProductRepository,
 
         customerRepository.findById(request.customerId)
 
-        return orderRepository.save(request)
+        val order = OrderEntity(
+            id = UUID.randomUUID().toString(),
+            customerId = request.customerId,
+            orderTime = LocalDateTime.now(),
+            orderStatus = OrderStatus.NEW,
+        )
+
+        val savedOrder = orderRepository.save(order)
+
+        return mapToResponse(savedOrder)
     }
 
     fun createNewPositionForOrder(orderId: String, request: OrderPositionCreateRequest): OrderPositionResponse {
@@ -31,22 +37,40 @@ class OrderService(val productRepository: ProductRepository,
         if (productRepository.findById(request.productId).isEmpty)
             throw IdNotFoundException(message = "Product with id ${request.productId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
-        val orderPositionResponse = OrderPositionResponse(
+        val orderPositon = OrderPositionEntity(
                 id = UUID.randomUUID().toString(),
                 orderId = orderId,
                 productId = request.productId,
                 quantity = request.quantity
         )
-        orderPositionRepository.save(orderPositionResponse)
+        val savedOrder = orderPositionRepository.save(orderPositon)
 
-        return orderPositionResponse;
-
+        return mapToResponse(savedOrder)
     }
 
     fun updateOrder(id: String, request: OrderUpdateRequest): OrderResponse {
-        val order = orderRepository.findById(id)
+        val order = orderRepository.getReferenceById(id)
         val updatedOrder = order.copy(orderStatus = request.orderStatus)
-        return orderRepository.save(updatedOrder)
+        val savedOrder = orderRepository.save(updatedOrder)
+        return mapToResponse(savedOrder)
+    }
+
+    private fun mapToResponse(savedOrder: OrderEntity) = OrderResponse(
+        id = savedOrder.id,
+        customerId = savedOrder.customerId,
+        orderTime = savedOrder.orderTime,
+        orderStatus = savedOrder.orderStatus,
+        orderPositions = emptyList()
+    )
+
+    companion object {
+        fun mapToResponse(savedOrder: OrderPositionEntity) =
+            OrderPositionResponse(
+                id = savedOrder.id,
+                orderId = savedOrder.orderId,
+                productId = savedOrder.productId,
+                quantity = savedOrder.quantity
+            )
     }
 
 }
