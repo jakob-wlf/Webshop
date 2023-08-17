@@ -107,6 +107,7 @@ class OrderService(val productRepository: ProductRepository,
         fun mapToResponse(savedOrder: OrderPositionEntity) =
             OrderPositionResponse(
                 id = savedOrder.id,
+
                 productId = savedOrder.productId,
                 quantity = savedOrder.quantity
             )
