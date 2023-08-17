@@ -10,19 +10,17 @@ import java.lang.IllegalArgumentException
 
 @Service
 class ShoppingCartService(val orderRepository: OrderRepository,
-                          val orderPositionRepository: OrderPositionRepository,
                           val productRepository: ProductRepository,
                           val customerRepository: CustomerRepository
 ) {
     fun getShoppingCartForCustomer(customerId: String): ShoppingCartResponse {
         customerRepository.findById(customerId);
 
-
         val orders: List<OrderEntity> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
 
-        val orderIds = orders.map { it.id }
-
-        val orderPositions = orderPositionRepository.findAllById(orderIds).map { OrderService.mapToResponse(it) }
+        val orderPositions = orders
+            .flatMap { it.orderPositions }
+            .map { OrderService.mapToResponse(it) }
 
         val deliveryCost = 800L
         val totalAmount = calculateSumForCart(orderPositions, deliveryCost)

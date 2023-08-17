@@ -8,4 +8,4 @@ enum class OrderStatus {
     NEW, CONFIRMED, SENT, DELIVERED, CANCELED
 }
 
-data class OrderPositionResponse(val id: String, val orderId: String, val productId: String, val quantity: Long)
+data class OrderPositionResponse(val id: String, val productId: String, val quantity: Long)

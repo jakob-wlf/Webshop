@@ -26,7 +26,6 @@ public class ShoppingCartServiceTest {
         productRepository = mock(ProductRepository.class);
         service = new ShoppingCartService(
                 mock(OrderRepository.class),
-                mock(OrderPositionRepository.class),
                 productRepository,
                 mock(CustomerRepository.class)
         );
@@ -119,7 +118,7 @@ public class ShoppingCartServiceTest {
     }
 
     private static void addOrderPosition(List<OrderPositionResponse> orderPositions, ProductEntity savedProduct, int quantity) {
-        orderPositions.add(new OrderPositionResponse("1", "orderId", savedProduct.getId(), quantity));
+        orderPositions.add(new OrderPositionResponse("1", "orderId", quantity));
     }
 
 }

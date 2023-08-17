@@ -12,8 +12,7 @@ import java.util.UUID
 @Service
 class OrderService(val productRepository: ProductRepository,
                    val orderRepository: OrderRepository,
-                   val customerRepository: CustomerRepository,
-                   val orderPositionRepository: OrderPositionRepository) {
+                   val customerRepository: CustomerRepository) {
 
     fun createOrder(request: OrderCreateRequest): CreateOrderResponse {
 
@@ -24,6 +23,7 @@ class OrderService(val productRepository: ProductRepository,
             customerId = request.customerId,
             orderTime = LocalDateTime.now(),
             orderStatus = OrderStatus.NEW,
+            orderPositions = emptyList()
         )
 
         val savedOrder = orderRepository.save(order)
@@ -33,20 +33,23 @@ class OrderService(val productRepository: ProductRepository,
 
     fun createNewPositionForOrder(orderId: String, request: OrderPositionCreateRequest): OrderPositionResponse {
 
-        orderRepository.findById(orderId)
+        val order = orderRepository.getReferenceById(orderId)
 
         if (productRepository.findById(request.productId).isEmpty)
             throw IdNotFoundException(message = "Product with id ${request.productId} not found", statusCode = HttpStatus.BAD_REQUEST)
 
         val orderPosition = OrderPositionEntity(
                 id = UUID.randomUUID().toString(),
-                orderId = orderId,
                 productId = request.productId,
                 quantity = request.quantity
         )
-        val savedOrder = orderPositionRepository.save(orderPosition)
+        val updatedOrderPositions = order.orderPositions.plus(orderPosition)
+        val updatedOrder = order.copy(
+            orderPositions = updatedOrderPositions
+        )
+        orderRepository.save(updatedOrder)
 
-        return mapToResponse(savedOrder)
+        return mapToResponse(orderPosition)
     }
 
     fun updateOrder(id: String, request: OrderUpdateRequest): CreateOrderResponse {
@@ -68,9 +71,8 @@ class OrderService(val productRepository: ProductRepository,
         val order = orderRepository.getReferenceById(id)
         val customer = customerRepository.getReferenceById(order.customerId)
 
-        val orderPositions = orderPositionRepository
-            .findAll()
-            .filter { it.orderId == order.id }
+        val orderPositions = order
+            .orderPositions
             .map {
                 val productEntity = productRepository.getReferenceById(it.productId)
 
@@ -105,7 +107,6 @@ class OrderService(val productRepository: ProductRepository,
         fun mapToResponse(savedOrder: OrderPositionEntity) =
             OrderPositionResponse(
                 id = savedOrder.id,
-                orderId = savedOrder.orderId,
                 productId = savedOrder.productId,
                 quantity = savedOrder.quantity
             )
