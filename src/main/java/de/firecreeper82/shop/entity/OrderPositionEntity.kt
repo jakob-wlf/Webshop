@@ -1,4 +1,4 @@
-package de.firecreeper82.shop.repository
+package de.firecreeper82.shop.entity
 
 import jakarta.persistence.Embeddable
 

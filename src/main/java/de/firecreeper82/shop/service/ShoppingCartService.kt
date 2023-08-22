@@ -39,7 +39,7 @@ class ShoppingCartService(val orderRepository: OrderRepository,
         val positionAmounts: List<Long> = orderPositions.map {
             val product: ProductEntity = productRepository
                 .findById(it.productId)
-                .orElseThrow { IdNotFoundException("Order with id ${it.productId} not found") }
+                .orElseThrow { IdNotFoundException("Product with id ${it.productId} not found") }
 
             if(it.quantity <= 0)
                 throw IllegalArgumentException("OrderPosition with quantity of ${it.quantity} is not allowed")

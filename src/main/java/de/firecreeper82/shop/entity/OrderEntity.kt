@@ -1,7 +1,6 @@
 package de.firecreeper82.shop.entity
 
 import de.firecreeper82.shop.model.OrderStatus
-import de.firecreeper82.shop.repository.OrderPositionEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
